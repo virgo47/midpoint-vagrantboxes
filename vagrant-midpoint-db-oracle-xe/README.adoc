@@ -1,0 +1,35 @@
+= Oracle XE for midPoint
+
+Before running `vagrant up` first create `tmp` directory for non-provided files.
+Two RPMs and two SQL files must be placed in `tmp` directory.
+
+From https://www.oracle.com/database/technologies/xe-downloads.html download the following:
+
+* oracle-database-xe-18c*.rpm
+* oracle-database-preinstall-18c*.rpm
+
+From midpoint sources (repository):
+
+* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/oracle-4.2-all.sql
+* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/oracle.sql
+
+When you have these in the `tmp` directory, run:
+----
+vagrant up
+----
+
+And wait... if everything is OK, you can try:
+----
+vagrant ssh
+----
+
+== How to use
+
+JDBC URL is (`/` before service name is important, it's not SID!):
+`jdbc:oracle:thin:@//192.168.56.31:1521/XEPDB1`
+
+Username/password: `midpoint`/`password`
+
+Midpoint doesn't have its own database, but it has its own schema/user `MIDPOINT`.
+
+Properties file for tests is provided, see comment there how to use it.

@@ -1,0 +1,22 @@
+# IDEA module/project/workspace files
+*.iml
+*.ipr
+*.iws
+
+# top level IDEA /out and .idea/.gradle at any level
+/out/
+.idea/
+.gradle/
+
+target/
+build/
+
+# packer output artifacts
+output-virtualbox-iso/
+packer_cache/
+*-virtualbox.box
+
+# vagrant directory
+.vagrant/
+# ignored directory for temporary files shared with Vagrant box
+tmp/
