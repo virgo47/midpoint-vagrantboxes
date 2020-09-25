@@ -24,3 +24,4 @@ And the magic happens...
 
 * Oracle XE 18c: link:vagrant-midpoint-db-oracle-xe/README.adoc[]
 * PostgreSQL: link:vagrant-midpoint-db-postgresql/README.adoc[]
+* MariaDB: link:vagrant-midpoint-db-mariadb/README.adoc[]
