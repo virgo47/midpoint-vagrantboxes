@@ -1,5 +1,25 @@
 = midPoint support Vagrant boxes
 
+https://www.vagrantup.com/[Vagrant] is an easy way how to prepare virtual machines quickly,
+especially for development or testing purposes.
+
+On Windows, I recommend https://chocolatey.org/[Chocolatey package manager] to install both
+https://www.virtualbox.org/[VirtualBox] and Vagrant quickly.
+
+After https://chocolatey.org/install[installing Chocolatey],
+it's a matter of two commands in `cmd` (run as administrator, of course):
+----
+cinst -y virtualbox
+cinst -y vagrant
+----
+
+After that just enter the provided subdirectories, check README file for necessary steps and then run:
+----
+vagrant up
+----
+
+And the magic happens...
+
 == Database boxes
 
 * Oracle XE 18c: link:vagrant-midpoint-db-oracle-xe/README.adoc[]
