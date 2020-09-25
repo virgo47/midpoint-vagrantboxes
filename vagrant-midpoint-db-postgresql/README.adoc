@@ -4,8 +4,8 @@ Before running `vagrant up` first create `tmp` directory for non-provided files.
 
 Following files from midpoint sources (repository) go to `tmp` directory:
 
-* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/oracle-4.2-all.sql
-* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/oracle.sql
+* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.2-all.sql
+* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
 
 Then run:
 ----
@@ -29,4 +29,8 @@ Properties file `vagrant-postgresql.properties` for tests is provided, see comme
 
 Just copy provided `config.xml` (not used by the Vagrant box, actually) to your `${midpoint.home}`.
 Alternatively, create a new directory like `midpoint-home-postgresql`, put the `config.xml` there
-and run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-oracle`.
+and run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-posgresql`.
+
+== See also
+
+https://wiki.evolveum.com/display/midPoint/PostgreSQL

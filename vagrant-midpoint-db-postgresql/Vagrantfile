@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |vb|
   #   vb.gui = true
-    vb.name = "postgres-linux"
+    vb.name = "midpoint-db-postgres"
     vb.memory = "1024"
   end
 
@@ -26,11 +26,14 @@ Vagrant.configure("2") do |config|
 
     # allow connections from outside (not just from localhost)
     sudo ed /etc/postgresql/*/main/postgresql.conf << EOF
+# we'll find commented line with listen_addresses
 /^#listen_addresses
+# and then well append ('a') this after it (up to '.')
 i
 # Listen on all interfaces to allow connections from outside
 listen_addresses = '*'
 .
+# write the file and finish
 wq
 EOF
     sudo cat >> /etc/postgresql/*/main/pg_hba.conf << EOF
@@ -38,8 +41,10 @@ EOF
 host    all             all             0.0.0.0/0            md5
 
 EOF
+    # change of configuration requires DB restart
     sudo service postgresql restart
 
+    # initializing midpoint user, database, etc.
     sudo -i -u postgres psql -c "CREATE USER midpoint WITH PASSWORD 'password' LOGIN SUPERUSER;"
     sudo -i -u postgres psql -c "CREATE DATABASE midpoint WITH OWNER = midpoint ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
 

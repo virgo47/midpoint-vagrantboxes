@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.56.31"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "midpoint-oracle-xe"
+    vb.name = "midpoint-db-oracle-xe"
     vb.memory = "2048"
   end
 
@@ -46,6 +46,7 @@ EOF
     export ORAENV_ASK=NO
     . /opt/oracle/product/18c/dbhomeXE/bin/oraenv
 
+    # initializing midpoint user, database, etc.
     sqlplus -S system/password@localhost/XEPDB1 <<< '@/vagrant/create-midpoint-db.sql'
 
     # importing midPoint schema

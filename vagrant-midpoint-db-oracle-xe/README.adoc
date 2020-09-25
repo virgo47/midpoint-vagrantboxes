@@ -37,3 +37,8 @@ Properties file `vagrant-oracle.properties` for tests is provided, see comment t
 Just copy provided `config.xml` (not used by the Vagrant box, actually) to your `${midpoint.home}`.
 Alternatively, create a new directory like `midpoint-home-oracle`, put the `config.xml` there
 and run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-oracle`.
+
+== See also
+
+https://wiki.evolveum.com/display/midPoint/Oracle+12c
+https://wiki.evolveum.com/display/~virgo/Oracle+Express+Edition+%28XE%29+18c
