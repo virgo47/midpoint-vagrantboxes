@@ -16,7 +16,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-    sudo yum -y update
+    # update causes breaks guest additions and /vagrant mounting will fail
+    #sudo yum -y update
 
     # installing Oracle packages
     sudo yum -y localinstall /vagrant/tmp/oracle-database-preinstall-*.rpm
@@ -46,7 +47,10 @@ EOF
     . /opt/oracle/product/18c/dbhomeXE/bin/oraenv
 
     sqlplus -S system/password@localhost/XEPDB1 <<< '@/vagrant/create-midpoint-db.sql'
+
+    # importing midPoint schema
     sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@/vagrant/tmp/oracle-4.2-all.sql"
+    # importing midPoint cleanup procedure for tests
     sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@/vagrant/tmp/oracle.sql"
 
   SHELL

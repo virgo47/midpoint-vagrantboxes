@@ -32,4 +32,8 @@ Username/password: `midpoint`/`password`
 
 Midpoint doesn't have its own database, but it has its own schema/user `MIDPOINT`.
 
-Properties file for tests is provided, see comment there how to use it.
+Properties file `vagrant-oracle.properties` for tests is provided, see comment there how to use it.
+
+Just copy provided `config.xml` (not used by the Vagrant box, actually) to your `${midpoint.home}`.
+Alternatively, create a new directory like `midpoint-home-oracle`, put the `config.xml` there
+and run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-oracle`.
