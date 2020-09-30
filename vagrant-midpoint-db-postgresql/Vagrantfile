@@ -4,6 +4,8 @@
 Vagrant.configure("2") do |config|
   # base Vagrantbox we're starting with
   config.vm.box = "bento/ubuntu-20.04"
+  config.vm.hostname = "mid-postgresql"
+
   config.vm.box_check_update = false
 
   # multiple entries can be added, but we don't need web, and we need 8080 free on host

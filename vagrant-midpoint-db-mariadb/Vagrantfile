@@ -4,6 +4,8 @@
 Vagrant.configure("2") do |config|
   # base Vagrantbox we're starting with
   config.vm.box = "bento/ubuntu-20.04"
+  config.vm.hostname = "mid-mariadb"
+
   config.vm.box_check_update = false
 
   # we don't forward ports, we will access this IP directly
