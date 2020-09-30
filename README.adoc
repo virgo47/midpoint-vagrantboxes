@@ -1,5 +1,7 @@
 = midPoint support Vagrant boxes
 
+== Preparation
+
 https://www.vagrantup.com/[Vagrant] is an easy way how to prepare virtual machines quickly,
 especially for development or testing purposes.
 
@@ -13,12 +15,37 @@ cinst -y virtualbox
 cinst -y vagrant
 ----
 
+== Using the vagrant environment
+
 After that just enter the provided subdirectories, check README file for necessary steps and then run:
 ----
 vagrant up
 ----
 
 And the magic happens...
+
+*It is not necessary to repeat the preparation steps the next time.*
+Just use `vagrant up` and it will start the VM in the state you left it previously.
+
+The first time Vagrant provisions the virtual machine, which means:
+
+* It downloads specified base vagrant box, which typically is some base Linux box.
+* It creates VM on the VirtualBox and starts it.
+* If some provisioning is necessary, it runs it (typically shell-based in this project).
+
+The first step takes the longest time (download), but after all these are done,
+next time you use `vagrant up` it merely starts the existing provisioned VM for you.
+This means that any preparation steps need to be done only the first time, or after the box is destroyed.
+
+To stop the box you can either shut it down from inside, or use:
+----
+vagrant halt
+----
+
+To destroy the box (it should remove it also from VirtualBox, you can check that):
+----
+vagrant destroy -f
+----
 
 == Database boxes
 
