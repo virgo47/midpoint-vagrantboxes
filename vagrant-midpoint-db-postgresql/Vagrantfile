@@ -51,7 +51,7 @@ EOF
     sudo -i -u postgres psql -c "CREATE DATABASE midpoint WITH OWNER = midpoint ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
 
     # let's make it easy for "vagrant" user to use psql command
-    sudo cat >> ~vagrant/.bashrc << EOF
+    sudo bash -c 'cat >> ~vagrant/.bashrc' << EOF
 
 export PGHOST=localhost
 export PGPORT=5432

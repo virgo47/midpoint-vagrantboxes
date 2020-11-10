@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
     sudo systemctl enable oracle-xe-18c
 
     # add convenient setup for vagrant
-    cat >> ~vagrant/.bash_profile << EOF
+    sudo bash -c 'cat >> ~vagrant/.bash_profile' << EOF
 export ORACLE_SID=XE
 export ORAENV_ASK=NO
 
