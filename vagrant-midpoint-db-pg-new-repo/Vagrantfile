@@ -1,0 +1,81 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  # base Vagrantbox we're starting with
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.hostname = "mid-pg-new-repo"
+
+  config.vm.box_check_update = false
+
+  # multiple entries can be added, but we don't need web, and we need 8080 free on host
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  # PostgreSQL
+  #config.vm.network "forwarded_port", guest: 5432, host: 5432
+  config.vm.network "private_network", ip: "192.168.56.33"
+
+
+  config.vm.provider "virtualbox" do |vb|
+  #   vb.gui = true
+    vb.name = "mid-pg-new-repo"
+    vb.memory = "2024"
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    sudo apt-get update
+    sudo apt-get install -y postgresql postgresql-contrib
+    sudo -i -u postgres psql -c "SELECT version();"
+
+    # allow connections from outside (not just from localhost)
+    sudo ed /etc/postgresql/*/main/postgresql.conf << EOF
+# we'll find commented line with listen_addresses
+/^#listen_addresses
+# and then well append ('a') this after it (up to '.')
+i
+# Listen on all interfaces to allow connections from outside
+listen_addresses = '*'
+.
+# write the file and finish
+wq
+EOF
+    sudo bash -c 'cat >> /etc/postgresql/*/main/pg_hba.conf' << EOF
+# Allow connections from outside (with password)
+host    all             all             0.0.0.0/0            md5
+
+EOF
+    # change of configuration requires DB restart
+    sudo service postgresql restart
+
+    # initializing midpoint user, database, etc.
+    sudo -i -u postgres psql -c "CREATE USER midpoint WITH PASSWORD 'password' LOGIN SUPERUSER;"
+    sudo -i -u postgres psql -c "CREATE DATABASE midpoint WITH OWNER = midpoint ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
+
+    # let's make it easy for "vagrant" user to use psql command
+    sudo bash -c 'cat >> ~vagrant/.bashrc' << EOF
+
+export PGHOST=localhost
+export PGPORT=5432
+export PGDATABASE=midpoint
+export PGUSER=midpoint
+export PGPASSWORD=password
+
+EOF
+  SHELL
+
+=begin
+    # repeating the initialization from above fore psql below
+    export PGHOST=localhost
+    export PGPORT=5432
+    export PGDATABASE=midpoint
+    export PGUSER=midpoint
+    export PGPASSWORD=password
+
+    # importing midPoint schema
+    psql < /vagrant/tmp/postgresql-4.2-all.sql
+    # importing midPoint cleanup procedure for tests
+    psql < /vagrant/tmp/postgresql.sql
+
+=end
+end

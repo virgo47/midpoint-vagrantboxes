@@ -1,5 +1,23 @@
 = midPoint support Vagrant boxes
 
+
+|===
+| Vagrantbox | IP | Notes
+
+3+| *Database boxes*
+| vagrant-midpoint-db-postgresql | 192.168.56.30
+| link:vagrant-midpoint-db-postgresql/README.adoc[PostgreSQL]
+| vagrant-midpoint-db-oracle-xe | 192.168.56.31
+| link:vagrant-midpoint-db-oracle-xe/README.adoc[Oracle XE 18c]
+| vagrant-midpoint-db-mariadb | 192.168.56.32
+| link:vagrant-midpoint-db-mariadb/README.adoc[MariaDB]
+| vagrant-midpoint-db-pg-new-repo | 192.168.56.33
+| link:vagrant-midpoint-db-pg-new-repo/README.adoc[PostgreSQL 13] WIP for midScale
+
+3+| *midPoint boxes*
+| vagrant-midpoint (TODO) | 192.168.56.40 |
+|===
+
 == Preparation
 
 https://www.vagrantup.com/[Vagrant] is an easy way how to prepare virtual machines quickly,
@@ -46,9 +64,3 @@ To destroy the box (it should remove it also from VirtualBox, you can check that
 ----
 vagrant destroy -f
 ----
-
-== Database boxes
-
-* Oracle XE 18c: link:vagrant-midpoint-db-oracle-xe/README.adoc[]
-* PostgreSQL: link:vagrant-midpoint-db-postgresql/README.adoc[]
-* MariaDB: link:vagrant-midpoint-db-mariadb/README.adoc[]
