@@ -1,11 +1,14 @@
 = PostgreSQL for midPoint
 
 Before running `vagrant up` first create `tmp` directory for non-provided files.
+TODO: currently not needed for new repo.
+Create Vagrantbox, then initialize it manually (e.g. from IDE).
+User `midpoint` will be created.
 
-Following files from midpoint sources (repository) go to `tmp` directory:
+//Following files from midpoint sources (repository) go to `tmp` directory:
 
-* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.2-all.sql
-* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
+//* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.2-all.sql
+//* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
 
 Then run:
 ----
@@ -19,7 +22,7 @@ vagrant ssh
 
 == How to use
 
-JDBC URL is: `jdbc:postgresql://192.168.56.30:5432/midpoint`
+JDBC URL is: `jdbc:postgresql://192.168.56.33:5432/midpoint`
 
 Username/password: `midpoint`/`password`
 
