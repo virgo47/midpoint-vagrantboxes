@@ -16,9 +16,11 @@ Vagrant.configure("2") do |config|
 
 
   config.vm.provider "virtualbox" do |vb|
-  #   vb.gui = true
+    #vb.gui = true
     vb.name = "mid-pg-new-repo"
-    vb.memory = "2024"
+    # UNCOMMENT these and config section lower for higher PG performance (stronger hosts only!)
+#    vb.memory = 8192
+#    vb.cpus = 4
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -40,6 +42,28 @@ listen_addresses = '*'
 # write the file and finish
 wq
 EOF
+
+# UNCOMMENT the following section to adjust configuration for 8GB/4CPU (see config.vm.provider above)
+# appending it is enough, later value overrides any previously mentioned one
+#    sudo bash -c 'cat >> /etc/postgresql/*/main/postgresql.conf' << EOF
+#max_connections = 100
+#shared_buffers = 2GB
+#effective_cache_size = 6GB
+#maintenance_work_mem = 512MB
+#checkpoint_completion_target = 0.7 # 0.9 for oltp
+#wal_buffers = 16MB
+#default_statistics_target = 100
+#random_page_cost = 1.1
+#effective_io_concurrency = 200
+#work_mem = 10485kB
+#min_wal_size = 1GB # 2 for oltp
+#max_wal_size = 4GB # 8 for oltp
+#max_worker_processes = 4
+#max_parallel_workers_per_gather = 2
+#max_parallel_workers = 4
+#max_parallel_maintenance_workers = 2
+#EOF
+
     sudo bash -c 'cat >> /etc/postgresql/*/main/pg_hba.conf' << EOF
 # Allow connections from outside (with password)
 host    all             all             0.0.0.0/0            md5
@@ -51,6 +75,9 @@ EOF
     # initializing midpoint user, database, etc.
     sudo -i -u postgres psql -c "CREATE USER midpoint WITH PASSWORD 'password' LOGIN SUPERUSER;"
     sudo -i -u postgres psql -c "CREATE DATABASE midpoint WITH OWNER = midpoint ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
+    # alternative midtest DB for automated tests
+    sudo -i -u postgres psql -c "CREATE USER midtest WITH PASSWORD 'password' LOGIN SUPERUSER;"
+    sudo -i -u postgres psql -c "CREATE DATABASE midtest WITH OWNER = midtest ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
 
     # let's make it easy for "vagrant" user to use psql command
     sudo bash -c 'cat >> ~vagrant/.bashrc' << EOF
@@ -64,8 +91,9 @@ export PGPASSWORD=password
 EOF
   SHELL
 
+# initializing schema is currently TODO
 =begin
-    # repeating the initialization from above fore psql below
+    # repeating the initialization from above for psql below
     export PGHOST=localhost
     export PGPORT=5432
     export PGDATABASE=midpoint

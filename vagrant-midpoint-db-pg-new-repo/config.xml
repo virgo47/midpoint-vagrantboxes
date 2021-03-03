@@ -11,8 +11,7 @@
             <importFolder>${midpoint.home}/import</importFolder>
         </webApplication>
         <repository>
-            <!-- TODO new repo class here some time later -->
-            <repositoryServiceFactoryClass>com.evolveum.midpoint.repo.sql.SqlRepositoryFactory</repositoryServiceFactoryClass>
+            <type>sqale</type>
             <database>postgresql</database>
             <jdbcUrl>jdbc:postgresql://192.168.56.33:5432/midpoint</jdbcUrl>
             <jdbcUsername>midpoint</jdbcUsername>
