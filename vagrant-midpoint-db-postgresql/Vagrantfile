@@ -68,10 +68,12 @@ EOF
     export PGUSER=midpoint
     export PGPASSWORD=password
 
-    # importing midPoint schema
-    psql < /vagrant/tmp/postgresql-4.2-all.sql
+    # importing midPoint schema - update the version as necessary
+    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.3-all.sql
+    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
+    psql < postgresql-4.3-all.sql
     # importing midPoint cleanup procedure for tests
-    psql < /vagrant/tmp/postgresql.sql
+    psql < postgresql.sql
 
   SHELL
 end

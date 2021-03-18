@@ -2,12 +2,10 @@
 
 Before running `vagrant up` first create `tmp` directory for non-provided files.
 
-Following files from midpoint sources (repository) go to `tmp` directory:
+Necessary SQL schema files from midpoint sources (repository) are downloaded by Vagrantfile.
+If a different version is necessary, modify the `Vagrantfile` accordingly.
 
-* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.2-all.sql
-* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
-
-Then run:
+To run the environment (first time takes longer):
 ----
 vagrant up
 ----
