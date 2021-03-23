@@ -78,6 +78,9 @@ EOF
     # alternative midtest DB for automated tests
     sudo -i -u postgres psql -c "CREATE USER midtest WITH PASSWORD 'password' LOGIN SUPERUSER;"
     sudo -i -u postgres psql -c "CREATE DATABASE midtest WITH OWNER = midtest ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
+    # alternative midold DB for comparison with legacy repository
+    sudo -i -u postgres psql -c "CREATE USER midold WITH PASSWORD 'password' LOGIN SUPERUSER;"
+    sudo -i -u postgres psql -c "CREATE DATABASE midold WITH OWNER = midold ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
 
     # let's make it easy for "vagrant" user to use psql command
     sudo bash -c 'cat >> ~vagrant/.bashrc' << EOF
@@ -89,10 +92,7 @@ export PGUSER=midpoint
 export PGPASSWORD=password
 
 EOF
-  SHELL
 
-# initializing schema is currently TODO
-=begin
     # repeating the initialization from above for psql below
     export PGHOST=localhost
     export PGPORT=5432
@@ -100,10 +100,18 @@ EOF
     export PGUSER=midpoint
     export PGPASSWORD=password
 
-    # importing midPoint schema
-    psql < /vagrant/tmp/postgresql-4.2-all.sql
-    # importing midPoint cleanup procedure for tests
-    psql < /vagrant/tmp/postgresql.sql
+    # importing midPoint schema - update the version as necessary
+    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.3-all.sql
+    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
+    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sqale/sql/pgnew-repo.sql
 
-=end
+    psql < pgnew-repo.sql
+
+    psql midtest midtest < pgnew-repo.sql
+
+    psql midold midold < postgresql-4.3-all.sql
+    # importing midPoint cleanup procedure for tests
+    psql midold midold < postgresql.sql
+
+  SHELL
 end

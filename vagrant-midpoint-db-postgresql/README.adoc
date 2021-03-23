@@ -1,16 +1,16 @@
 = PostgreSQL for midPoint
 
-Before running `vagrant up` first create `tmp` directory for non-provided files.
-
 Necessary SQL schema files from midpoint sources (repository) are downloaded by Vagrantfile.
 If a different version is necessary, modify the `Vagrantfile` accordingly.
 
 To run the environment (first time takes longer):
+
 ----
 vagrant up
 ----
 
 And wait... if everything is OK, you can try:
+
 ----
 vagrant ssh
 ----

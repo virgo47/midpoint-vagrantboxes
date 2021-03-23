@@ -1,24 +1,26 @@
-= PostgreSQL for midPoint
+= PostgreSQL for midPoint - new repository
 
-Before running `vagrant up` first create `tmp` directory for non-provided files.
-TODO: currently not needed for new repo.
-Create Vagrantbox, then initialize it manually (e.g. from IDE).
-User `midpoint` will be created.
+Necessary SQL schema files from midpoint sources (repository) are downloaded by Vagrantfile.
+If a different version is necessary, modify the `Vagrantfile` accordingly.
 
-//Following files from midpoint sources (repository) go to `tmp` directory:
+To run the environment (first time takes longer):
 
-//* https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.2-all.sql
-//* https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
-
-Then run:
 ----
 vagrant up
 ----
 
 And wait... if everything is OK, you can try:
+
 ----
 vagrant ssh
 ----
+
+[IMPORTANT]
+Main reason for this Vagrantbox is testing with new repository - that's what `midpoint` database
+is for; for automated tests with new repo there is separate `midtest` database too.
+But there is also `midold` database with old repository which is also available with another
+Vagrantbox - why is it here?
+It's meant for comparison tests on the same "hardware" with the same PG version and setup.
 
 == How to use
 
@@ -26,14 +28,28 @@ JDBC URL is: `jdbc:postgresql://192.168.56.33:5432/midpoint`
 
 Username/password: `midpoint`/`password`
 
+Alternative databases (password is the same as above):
+
+* for automated tests - database and username `midtest`
+* old repository for comparison tests - database and username `midold`
+
 IP must match the one from the link:Vagrantfile[].
 
-Properties file `vagrant-postgresql.properties` for tests is provided, see comment there how to use it.
+Properties file `vagrant-midtest.properties` for tests is provided, see comment there how to use it.
+Use it with the following JVM argument:
+----
+-Dconfig=<path-to-vagrantboxes>/vagrant-midpoint-db-pg-new-repo/vagrant-midtest.properties
+----
 
-Just copy provided `config.xml` (not used by the Vagrant box, actually) to your `${midpoint.home}`.
-Alternatively, create a new directory like `midpoint-home-postgresql`, put the `config.xml` there
-and run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-posgresql`.
+Config file for old repository can be used in a similar way.
+
+To use the new repository for midpoint application it is recommended to pre-create dedicated
+`${midpoint.home}` directory for it and copy the provided `config.xml` there.
+Then run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-pgnew`
+(where `midpoint-home-pgnew` is the actual midPoint home).
 
 == See also
 
 https://wiki.evolveum.com/display/midPoint/PostgreSQL
+
+TODO: add new repository documentation
