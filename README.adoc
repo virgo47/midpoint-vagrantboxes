@@ -15,7 +15,10 @@
 | link:vagrant-midpoint-db-pg-new-repo/README.adoc[PostgreSQL 13] WIP for midScale
 
 3+| *midPoint boxes*
-| vagrant-midpoint (TODO) | 192.168.56.40 |
+| vagrant-midpoint (TODO) | 192.168.56.40
+|
+| vagrant-midpoint-linux-build | 192.168.56.50 
+| link:vagrant-midpoint-linux-build/README.adoc[midPoint devel/build]
 |===
 
 == Preparation

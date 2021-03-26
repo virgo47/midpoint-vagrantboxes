@@ -1,0 +1,30 @@
+= Linux for midPoint build
+
+This environment provides Linux machine (Ubuntu) with Zulu JDK 11 (other versions are possible)
+and Maven, git and other tools for midPoint build.
+
+To run the environment (first time takes longer):
+----
+vagrant up
+----
+
+And wait... if everything is OK, you can try:
+----
+vagrant ssh
+----
+
+== How to use
+
+After connecting to the machine (e.g. with `vagrant ssh`) the default `JAVA_HOME` is ready.
+Midpoint must be cloned from the repository first, HTTPS is used, so GitHub account is not needed.
+After that midPoint can be built (first build takes longer to download many dependencies) and run:
+
+----
+# we create non-default directory, because ~/midpoint is also default midpoint.home
+git clone https://github.com/Evolveum/midpoint.git midpoint-src
+cd midpoint-src
+mvn clean install -DskipTests -P -dist
+java -jar gui/admin-gui/target/midpoint-executable.war &
+----
+
+Started midPoint will create its home directory in ~/midpoint.
