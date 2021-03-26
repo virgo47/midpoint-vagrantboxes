@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
     cd
     
     # configure JAVA_HOMEs, PATH, etc.
-    sudo bash -c 'cat >> ~vagrant/.bashrc' << EOF
+    sudo bash -c 'cat >> ~vagrant/.bashrc' << "EOF"
 
 export TOOLS_HOME=$HOME/tools
 
@@ -52,8 +52,7 @@ function setjava() {
   # Now to fix PATH to new JAVA_HOME (TOOLS_HOME is defined in environment)
   PATH="$(echo $PATH |
     sed \
-      -e "s%/c/PROGRA~./Java/jdk[^:]*%$JAVA_HOME/bin%gI" \
-      -e "s%$TOOLS_HOME/java/[^:]*%$JAVA_HOME/bin%gI")"
+      -e "s%$TOOLS_HOME/[^:]*jdk[^:]*%$JAVA_HOME/bin%gI")"
   if ! type -p java &> /dev/null; then
     echo "Adding java to PATH"
     PATH=$JAVA_HOME/bin:$PATH
