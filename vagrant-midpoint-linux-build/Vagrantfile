@@ -24,8 +24,8 @@ Vagrant.configure("2") do |config|
     #sudo apt-get install -y nothing necessary, git is already there
     mkdir tools
     cd tools
-    wget https://cdn.azul.com/zulu/bin/zulu16.28.11-ca-jdk16.0.0-linux_x64.tar.gz -qcO - | tar xzv
     wget https://cdn.azul.com/zulu/bin/zulu11.45.27-ca-jdk11.0.10-linux_x64.tar.gz -qcO - | tar xzv
+    wget https://cdn.azul.com/zulu/bin/zulu16.28.11-ca-jdk16.0.0-linux_x64.tar.gz -qcO - | tar xzv
     wget https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -qcO - | tar xzv
     cd
     
@@ -62,7 +62,7 @@ function setjava() {
 }
 
 export JAVA11_HOME=$HOME/tools/zulu11.45.27-ca-jdk11.0.10-linux_x64
-export JAVA16_HOME=$HOME/tools/zulu11.45.27-ca-jdk11.0.10-linux_x64
+export JAVA16_HOME=$HOME/tools/zulu16.28.11-ca-jdk16.0.0-linux_x64
 
 echo
 echo "Use macros \"setjava <version>\" to switch between Javas (JAVA_HOME, PATH)."
