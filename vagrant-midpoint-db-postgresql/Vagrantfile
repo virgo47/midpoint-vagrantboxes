@@ -35,6 +35,13 @@ i
 # Listen on all interfaces to allow connections from outside
 listen_addresses = '*'
 .
+$
+a
+
+# load statement statistics module: https://www.postgresql.org/docs/13/pgstatstatements.html
+# very low overhead, recommended at least for all non-production environments (good for prod too)
+shared_preload_libraries = 'pg_stat_statements'
+.
 # write the file and finish
 wq
 EOF
@@ -69,11 +76,13 @@ EOF
     export PGPASSWORD=password
 
     # importing midPoint schema - update the version as necessary
-    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.3-all.sql
-    wget https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.3-all.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
     psql < postgresql-4.3-all.sql
     # importing midPoint cleanup procedure for tests
     psql < postgresql.sql
+    # adding statement stats extension
+    psql -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
   SHELL
 end
