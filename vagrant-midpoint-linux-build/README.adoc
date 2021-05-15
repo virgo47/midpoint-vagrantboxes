@@ -28,3 +28,8 @@ java -jar gui/admin-gui/target/midpoint-executable.war &
 ----
 
 Started midPoint will create its home directory in ~/midpoint.
+Log can be monitored with the command:
+
+----
+tail -f ~/midpoint/log/midpoint.log
+----
