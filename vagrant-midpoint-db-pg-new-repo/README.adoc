@@ -16,11 +16,15 @@ vagrant ssh
 ----
 
 [IMPORTANT]
+====
 Main reason for this Vagrantbox is testing with new repository - that's what `midpoint` database
 is for; for automated tests with new repo there is separate `midtest` database too.
+
 But there is also `midold` database with old repository which is also available with another
 Vagrantbox - why is it here?
 It's meant for comparison tests on the same "hardware" with the same PG version and setup.
+You can ignore it if you're only interested in the new repository.
+====
 
 == How to use
 
@@ -50,6 +54,5 @@ Then run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoin
 
 == See also
 
-https://wiki.evolveum.com/display/midPoint/PostgreSQL
-
-TODO: add new repository documentation
+* https://docs.evolveum.com/midpoint/projects/midscale/design/repo/new-repo-startup/[How to start with new repository]
+* https://wiki.evolveum.com/display/midPoint/PostgreSQL[Postgres setup for old repository]
