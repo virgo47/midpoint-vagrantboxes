@@ -18,9 +18,12 @@
             <jdbcPassword>password</jdbcPassword>
         </repository>
         <audit>
-            <!-- SQL audit is not supported for new repo yet. WIP -->
             <auditService>
                 <auditServiceFactoryClass>com.evolveum.midpoint.audit.impl.LoggerAuditServiceFactory</auditServiceFactoryClass>
+            </auditService>
+            <auditService>
+                <!-- Use this instead of com.evolveum.midpoint.repo.sql.SqlAuditServiceFactory -->
+                <auditServiceFactoryClass>com.evolveum.midpoint.repo.sqale.audit.SqaleAuditServiceFactory</auditServiceFactoryClass>
             </auditService>
         </audit>
         <icf>
