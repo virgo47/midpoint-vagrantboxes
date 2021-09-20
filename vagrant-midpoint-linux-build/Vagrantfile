@@ -8,8 +8,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.box_check_update = false
 
-  # multiple entries can be added, but we don't need web, and we need 8080 free on host
-  # config.vm.network "forwarded_port", guest: 8080, host: 8080
+  # Multiple entries can be added, we don't need web (8080), but we want remote debug on 9009.
+  # Run Maven with: -Dmaven.failsafe.debug="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:9009"
+  # This is for failsafe (integration) tests, "surefire" is also possible. Set suspend=y if it should wait for debugger.
+  config.vm.network "forwarded_port", guest: 9009, host: 9009
   config.vm.network "private_network", ip: "192.168.56.50"
 
   config.vm.provider "virtualbox" do |vb|
@@ -28,7 +30,7 @@ Vagrant.configure("2") do |config|
     wget https://cdn.azul.com/zulu/bin/zulu16.28.11-ca-jdk16.0.0-linux_x64.tar.gz -qcO - | tar xzv
     wget https://downloads.apache.org/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -qcO - | tar xzv
     cd
-    
+
     # configure JAVA_HOMEs, PATH, etc.
     sudo bash -c 'cat >> ~vagrant/.bashrc' << "EOF"
 
@@ -73,5 +75,7 @@ setjava 11
 PATH=$PATH:$HOME/tools/apache-maven-3.6.3/bin
 EOF
 
+  git config --global user.name "Richard Richter"
+  git config --global user.email virgo@evolveum.com
   SHELL
 end
