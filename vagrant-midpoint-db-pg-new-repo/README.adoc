@@ -70,6 +70,6 @@ Then run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoin
 
 == See also
 
-* https://docs.evolveum.com/midpoint/reference/repository/repository-native-usage/[Using native (new) repository]
+* https://docs.evolveum.com/midpoint/reference/repository/native-postgresql/usage/[Using Native PostgreSQL Repository]
 * https://docs.evolveum.com/midpoint/reference/repository/configuration/[Repository Configuration]
 * https://wiki.evolveum.com/display/midPoint/PostgreSQL[Postgres setup for old repository]
