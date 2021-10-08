@@ -51,7 +51,7 @@ EOF
     sqlplus -S system/password@localhost/XEPDB1 <<< '@/vagrant/create-midpoint-db.sql'
 
     # importing midPoint schema
-    sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@/vagrant/tmp/oracle-4.2-all.sql"
+    sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@/vagrant/tmp/oracle-4.4-all.sql"
     # importing midPoint cleanup procedure for tests
     sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@/vagrant/tmp/oracle.sql"
 

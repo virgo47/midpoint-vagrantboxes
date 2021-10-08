@@ -19,6 +19,9 @@ vagrant ssh
 ====
 Main reason for this Vagrantbox is testing with new repository - that's what `midpoint` database
 is for; for automated tests with new repo there is separate `midtest` database too.
+And there is more!
+There is also `midaudit` if you wish to use separate audit database.
+You don't have to, audit tables are in the main `midpoint` database as well - but you can.
 
 But there is also `midold` database with old repository which is also available with another
 Vagrantbox - why is it here?
@@ -39,13 +42,26 @@ Alternative databases (password is the same as above):
 
 IP must match the one from the link:Vagrantfile[].
 
-Properties file `vagrant-midtest.properties` for tests is provided, see comment there how to use it.
-Use it with the following JVM argument:
+To run tests with the new repo we need add the following JVM args:
 ----
--Dconfig=<path-to-vagrantboxes>/vagrant-midpoint-db-pg-new-repo/vagrant-midtest.properties
+-Dtest.config.file=test-config-new-repo.xml
 ----
 
-Config file for old repository can be used in a similar way.
+If different JDBC URL, username and password is used, they must be provided too using
+https://docs.evolveum.com/midpoint/reference/deployment/midpoint-home-directory/overriding-config-xml-parameters/[`config.xml` overriding mechanism].
+E.g. for JDBC URL with localhost and different port:
+----
+-Dmidpoint.repository.jdbcUrl=jdbc:postgresql://localhost:15432
+----
+
+Test configuration for old repository can be set using `-Dconfig` JVM argument:
+----
+-Dconfig=<path-to-vagrantboxes>/vagrant-midpoint-db-pg-new-repo/vagrant-midold.properties
+----
+
+Note, that this only works for old repository, use JVM args mentioned before for new repo.
+
+=== Using dedicated midpoint.home directory
 
 To use the new repository for midpoint application it is recommended to pre-create dedicated
 `${midpoint.home}` directory for it and copy the provided `config.xml` there.
@@ -54,5 +70,6 @@ Then run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoin
 
 == See also
 
-* https://docs.evolveum.com/midpoint/projects/midscale/design/repo/new-repo-startup/[How to start with new repository]
+* https://docs.evolveum.com/midpoint/reference/repository/repository-native-usage/[Using native (new) repository]
+* https://docs.evolveum.com/midpoint/reference/repository/configuration/[Repository Configuration]
 * https://wiki.evolveum.com/display/midPoint/PostgreSQL[Postgres setup for old repository]

@@ -19,8 +19,8 @@ Vagrant.configure("2") do |config|
     #vb.gui = true
     vb.name = "mid-pg-new-repo"
     # UNCOMMENT these and config section lower for higher PG performance (stronger hosts only!)
-#    vb.memory = 8192
-#    vb.cpus = 4
+    vb.memory = 8192
+    vb.cpus = 4
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -42,7 +42,7 @@ listen_addresses = '*'
 $
 a
 
-# load statement statistics module: https://www.postgresql.org/docs/13/pgstatstatements.html
+# load statement statistics module: https://www.postgresql.org/docs/current/pgstatstatements.html
 # very low overhead, recommended at least for all non-production environments (good for prod too)
 shared_preload_libraries = 'pg_stat_statements'
 .
@@ -52,24 +52,24 @@ EOF
 
 # UNCOMMENT the following section to adjust configuration for 8GB/4CPU (see config.vm.provider above)
 # appending it is enough, later value overrides any previously mentioned one
-#    sudo bash -c 'cat >> /etc/postgresql/*/main/postgresql.conf' << EOF
-#max_connections = 100
-#shared_buffers = 2GB
-#effective_cache_size = 6GB
-#maintenance_work_mem = 512MB
-#checkpoint_completion_target = 0.7 # 0.9 for oltp
-#wal_buffers = 16MB
-#default_statistics_target = 100
-#random_page_cost = 1.1
-#effective_io_concurrency = 200
-#work_mem = 10485kB
-#min_wal_size = 1GB # 2 for oltp
-#max_wal_size = 4GB # 8 for oltp
-#max_worker_processes = 4
-#max_parallel_workers_per_gather = 2
-#max_parallel_workers = 4
-#max_parallel_maintenance_workers = 2
-#EOF
+    sudo bash -c 'cat >> /etc/postgresql/*/main/postgresql.conf' << EOF
+max_connections = 100
+shared_buffers = 2GB
+effective_cache_size = 6GB
+maintenance_work_mem = 512MB
+checkpoint_completion_target = 0.7 # 0.9 for oltp
+wal_buffers = 16MB
+default_statistics_target = 100
+random_page_cost = 1.1
+effective_io_concurrency = 200
+work_mem = 10485kB
+min_wal_size = 1GB # 2 for oltp
+max_wal_size = 4GB # 8 for oltp
+max_worker_processes = 4
+max_parallel_workers_per_gather = 2
+max_parallel_workers = 4
+max_parallel_maintenance_workers = 2
+EOF
 
     sudo bash -c 'cat >> /etc/postgresql/*/main/pg_hba.conf' << EOF
 # Allow connections from outside (with password)
@@ -82,6 +82,9 @@ EOF
     # initializing midpoint user, database, etc.
     sudo -i -u postgres psql -c "CREATE USER midpoint WITH PASSWORD 'password' LOGIN SUPERUSER;"
     sudo -i -u postgres psql -c "CREATE DATABASE midpoint WITH OWNER = midpoint ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
+    # separate audit database (optional)
+    sudo -i -u postgres psql -c "CREATE USER midaudit WITH PASSWORD 'password' LOGIN SUPERUSER;"
+    sudo -i -u postgres psql -c "CREATE DATABASE midaudit WITH OWNER = midaudit ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
     # alternative midtest DB for automated tests
     sudo -i -u postgres psql -c "CREATE USER midtest WITH PASSWORD 'password' LOGIN SUPERUSER;"
     sudo -i -u postgres psql -c "CREATE DATABASE midtest WITH OWNER = midtest ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
@@ -97,6 +100,7 @@ export PGPORT=5432
 export PGDATABASE=midpoint
 export PGUSER=midpoint
 export PGPASSWORD=password
+export PAGER="less -S"
 
 EOF
 
@@ -108,18 +112,30 @@ EOF
     export PGPASSWORD=password
 
     # importing midPoint schema - update the version as necessary
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/postgresql-4.3-all.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new-audit.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new-quartz.sql
+    # old repo schema + test support db cleanup script
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/generic-old/postgresql-4.4-all.sql
     wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sqale/sql/pgnew-repo.sql
 
-    psql < pgnew-repo.sql
+    # full DB with new repo and audit+quartz tables
+    psql < postgres-new.sql
+    psql < postgres-new-audit.sql
+    psql < postgres-new-quartz.sql
     # adding statement stats extension
     psql -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
-    psql midtest midtest < pgnew-repo.sql
+    # test database repo+audit
+    psql midtest midtest < postgres-new.sql
+    psql midtest midtest < postgres-new-audit.sql
     psql midtest midtest -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
-    psql midold midold < postgresql-4.3-all.sql
+    # pure audit DB
+    psql midaudit midaudit < postgres-new-audit.sql
+    psql midaudit midaudit -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+
+    psql midold midold < postgresql-4.4-all.sql
     # importing midPoint cleanup procedure for tests
     psql midold midold < postgresql.sql
     psql midold midold -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
