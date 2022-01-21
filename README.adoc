@@ -5,20 +5,31 @@
 | Vagrantbox | IP | Notes
 
 3+| *Database boxes*
+
 | vagrant-midpoint-db-postgresql | 192.168.56.30
 | link:vagrant-midpoint-db-postgresql/README.adoc[PostgreSQL]
+
 | vagrant-midpoint-db-oracle-xe | 192.168.56.31
 | link:vagrant-midpoint-db-oracle-xe/README.adoc[Oracle XE 18c]
+
 | vagrant-midpoint-db-mariadb | 192.168.56.32
 | link:vagrant-midpoint-db-mariadb/README.adoc[MariaDB]
+
 | vagrant-midpoint-db-pg-new-repo | 192.168.56.33
-| link:vagrant-midpoint-db-pg-new-repo/README.adoc[PostgreSQL 13] WIP for midScale
+| link:vagrant-midpoint-db-pg-new-repo/README.adoc[PostgreSQL 14] WIP for midScale
 
 3+| *midPoint boxes*
+
 | vagrant-midpoint (TODO) | 192.168.56.40
 |
+
 | vagrant-midpoint-linux-build | 192.168.56.50 
 | link:vagrant-midpoint-linux-build/README.adoc[midPoint devel/build]
+
+3+| *other boxes*
+
+| vagrant-midpoint-db-ldap-testing | 192.168.56.47
+| internal testing (MID-101), Native repo + OpenLDAP
 |===
 
 == Preparation

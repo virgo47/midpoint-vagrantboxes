@@ -1,0 +1,41 @@
+dn: dc=example,dc=com
+changetype: add
+objectClass: domain
+
+dn: ou=people,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=example,dc=com
+changetype: add
+objectClass: organizationalUnit
+ou: groups
+
+dn: ou=orgStruct,dc=example,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: orgStruct
+
+dn: ou=Administrators,dc=example,dc=com
+changetype: add
+objectclass: top
+objectclass: organizationalunit
+ou: Administrators
+
+dn: cn=idm,ou=Administrators,dc=example,dc=com
+changetype: add
+objectclass: top
+objectclass: person
+cn: idm
+sn: IDM Administrator
+description: Special LDAP acccount used by the IDM
+  to access the LDAP data.
+# password is: secret
+userPassword: {SSHA}IHr3vWr2J8CSCrQ6aR2xUD5SP1e+jTPJ
+
+dn: cn=TerraForming,ou=groups,dc=example,dc=com
+changetype: add
+objectClass: groupOfNames
+cn: TerraForming
+member: cn=whatever,o=wherever
