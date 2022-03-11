@@ -4,7 +4,7 @@
 Vagrant.configure("2") do |config|
   # base Vagrantbox we're starting with
   config.vm.box = "bento/ubuntu-20.04"
-  config.vm.hostname = "mid-pg-new-repo"
+  config.vm.hostname = "mid-pg-new-repo-4-4"
 
   config.vm.box_check_update = false
 
@@ -17,10 +17,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |vb|
     #vb.gui = true
-    vb.name = "mid-pg-new-repo"
+    vb.name = "mid-pg-new-repo-4-4"
     # UNCOMMENT these and config section lower for higher PG performance (stronger hosts only!)
-    vb.memory = 8192
-    vb.cpus = 4
+    vb.memory = 2048
+    vb.cpus = 1
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -50,25 +50,21 @@ shared_preload_libraries = 'pg_stat_statements'
 wq
 EOF
 
-# UNCOMMENT the following section to adjust configuration for 8GB/4CPU (see config.vm.provider above)
+# https://pgtune.leopard.in.ua/ 2GB/1CPU
 # appending it is enough, later value overrides any previously mentioned one
     sudo bash -c 'cat >> /etc/postgresql/*/main/postgresql.conf' << EOF
 max_connections = 100
-shared_buffers = 2GB
-effective_cache_size = 6GB
-maintenance_work_mem = 512MB
-checkpoint_completion_target = 0.7 # 0.9 for oltp
+shared_buffers = 512MB
+effective_cache_size = 1536MB
+maintenance_work_mem = 128MB
+checkpoint_completion_target = 0.9
 wal_buffers = 16MB
 default_statistics_target = 100
 random_page_cost = 1.1
 effective_io_concurrency = 200
-work_mem = 10485kB
-min_wal_size = 1GB # 2 for oltp
-max_wal_size = 4GB # 8 for oltp
-max_worker_processes = 4
-max_parallel_workers_per_gather = 2
-max_parallel_workers = 4
-max_parallel_maintenance_workers = 2
+work_mem = 1310kB
+min_wal_size = 1GB
+max_wal_size = 4GB
 
 # this is to log all the queries, just be aware of the free disk space
 logging_collector = on
@@ -119,12 +115,12 @@ EOF
     export PGPASSWORD=password
 
     # importing midPoint schema - update the version as necessary
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new.sql
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new-audit.sql
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new-quartz.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/config/sql/native-new/postgres-new.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/config/sql/native-new/postgres-new-audit.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/config/sql/native-new/postgres-new-quartz.sql
     # old repo schema + test support db cleanup script
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/generic-old/postgresql-4.5-all.sql
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/config/sql/generic-old/postgresql-4.4-all.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
 
     # full DB with new repo and audit+quartz tables
     psql < postgres-new.sql
@@ -142,7 +138,7 @@ EOF
     psql midaudit midaudit < postgres-new-audit.sql
     psql midaudit midaudit -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
-    psql midold midold < postgresql-4.5-all.sql
+    psql midold midold < postgresql-4.4-all.sql
     # importing midPoint cleanup procedure for tests
     psql midold midold < postgresql.sql
     psql midold midold -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"

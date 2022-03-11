@@ -1,0 +1,5 @@
+= PostgreSQL Native repo DB for midPoint - support 4.4
+
+This is version of `vagrant-midpoint-db-pg-new-repo` for branch `support-4.4`.
+
+It uses the same IP address, don't run in parallel with the master version.
