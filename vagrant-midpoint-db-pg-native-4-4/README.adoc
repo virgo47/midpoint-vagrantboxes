@@ -2,4 +2,4 @@
 
 This is version of `vagrant-midpoint-db-pg-new-repo` for branch `support-4.4`.
 
-It uses the same IP address, don't run in parallel with the master version.
+It uses different IP (44), so it can be run simultaneously with the other Vagrantboxes.

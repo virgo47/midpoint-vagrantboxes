@@ -16,7 +16,10 @@
 | link:vagrant-midpoint-db-mariadb/README.adoc[MariaDB]
 
 | vagrant-midpoint-db-pg-new-repo | 192.168.56.33
-| link:vagrant-midpoint-db-pg-new-repo/README.adoc[PostgreSQL 14] WIP for midScale
+| link:vagrant-midpoint-db-pg-new-repo/README.adoc[PostgreSQL 14]
+
+| vagrant-midpoint-db-pg-native-4-4 | 192.168.56.44
+| link:vagrant-midpoint-db-pg-native-4-4/README.adoc[PostgreSQL 14]
 
 3+| *midPoint boxes*
 
