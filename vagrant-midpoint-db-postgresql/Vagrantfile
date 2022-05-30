@@ -76,7 +76,7 @@ EOF
     export PGPASSWORD=password
 
     # importing midPoint schema - update the version as necessary
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/generic-old/postgresql-4.4-all.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/generic-old/postgresql-4.5-all.sql
     wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
     psql < postgresql-4.4-all.sql
     # importing midPoint cleanup procedure for tests

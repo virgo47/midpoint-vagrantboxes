@@ -6,7 +6,7 @@ Two RPMs and two SQL files must be placed in `tmp` directory.
 From https://www.oracle.com/database/technologies/xe-downloads.html download the following:
 
 * oracle-database-xe-18c*.rpm
-* oracle-database-preinstall-18c*.rpm
+* oracle-database-preinstall-18c*.rpm (For CentOS 7)
 
 From midpoint sources (repository):
 
