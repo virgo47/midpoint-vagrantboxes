@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
     cd tools
     wget https://cdn.azul.com/zulu/bin/zulu11.45.27-ca-jdk11.0.10-linux_x64.tar.gz -qcO - | tar xzv
     wget https://cdn.azul.com/zulu/bin/zulu17.30.15-ca-jdk17.0.1-linux_x64.tar.gz -qcO - | tar xzv
-    wget https://dlcdn.apache.org/maven/maven-3/3.8.3/binaries/apache-maven-3.8.3-bin.tar.gz -qcO - | tar xzv
+    wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz -qcO - | tar xzv
     cd
 
     # configure JAVA_HOMEs, PATH, etc.
