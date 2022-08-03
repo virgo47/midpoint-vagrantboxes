@@ -72,7 +72,7 @@ setjava ''
 echo
 setjava 11
 
-PATH=$PATH:$HOME/tools/apache-maven-3.8.3/bin
+PATH=$PATH:$HOME/tools/apache-maven-3.8.6/bin
 EOF
 
   git config --global user.name "Richard Richter"
