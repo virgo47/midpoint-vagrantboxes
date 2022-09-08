@@ -56,7 +56,7 @@ E.g. for JDBC URL with localhost and different port:
 
 Test configuration for old repository can be set using `-Dconfig` JVM argument:
 ----
--Dconfig=<path-to-vagrantboxes>/vagrant-midpoint-db-pg-new-repo/vagrant-midold.properties
+-Dconfig=<path-to-vagrantboxes>/vagrant-midpoint-db-pg-native/vagrant-midold.properties
 ----
 
 Note, that this only works for old repository, use JVM args mentioned before for new repo.

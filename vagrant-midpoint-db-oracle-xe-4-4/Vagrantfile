@@ -1,0 +1,63 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/centos-7"
+  #config.vm.hostname = "mid-oracle-xe" DO NOT SET, causes problems with TNS listener!
+
+  # config.vm.box_check_update = false
+  # config.vm.network "forwarded_port", guest: 1521, host: 1521
+  # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+
+  config.vm.network "private_network", ip: "192.168.56.144"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "midpoint-db-oracle-xe-4-4"
+    vb.memory = "2048"
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    # update causes breaks guest additions and /vagrant mounting will fail
+    #sudo yum -y update
+
+    # installing Oracle packages
+    sudo yum -y localinstall /vagrant/tmp/oracle-database-preinstall-*.rpm
+    sudo yum -y localinstall /vagrant/tmp/oracle-database-xe-18c-*.rpm
+
+    # configuring the database
+    sudo bash -c 'echo "ORACLE_PASSWORD=password" >> /etc/sysconfig/oracle-xe-18c.conf'
+    sudo /etc/init.d/oracle-xe-18c configure
+
+    # to enable start of Oracle after boot
+    sudo systemctl daemon-reload
+    sudo systemctl enable oracle-xe-18c
+
+    # add convenient setup for vagrant
+    sudo bash -c 'cat >> ~vagrant/.bash_profile' << EOF
+export ORACLE_SID=XE
+export ORAENV_ASK=NO
+PATH=$PATH:/opt/oracle/product/18c/dbhomeXE/bin
+
+. /opt/oracle/product/18c/dbhomeXE/bin/oraenv
+EOF
+
+    # this is needed for root to find dbhome
+    PATH=$PATH:/usr/local/bin
+    # and now to create midpoint schema
+    export ORACLE_SID=XE
+    export ORAENV_ASK=NO
+    . /opt/oracle/product/18c/dbhomeXE/bin/oraenv
+
+    # initializing midpoint user, database, etc.
+    sqlplus -S system/password@localhost/XEPDB1 <<< '@/vagrant/create-midpoint-db.sql'
+
+    # importing midPoint schema
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/config/sql/generic-old/oracle-4.4-all.sql
+    sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@oracle-4.4-all.sql"
+    
+    # importing midPoint cleanup procedure for tests
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/support-4.4/repo/repo-sql-impl-test/sql-procedures/oracle.sql
+    sqlplus -S midpoint/password@localhost/XEPDB1 <<< "@oracle.sql"
+
+  SHELL
+end

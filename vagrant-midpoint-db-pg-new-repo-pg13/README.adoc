@@ -1,0 +1,5 @@
+Like vagrant-midpoint-db-pg-native but for the lowest supported version - PG 13 now.
+And smaller sizing!
+And uses 4.4 first SQL script + upgrade scripts instead of full SQL script from master.
+
+Uses the same IP as vagrant-midpoint-db-pg-native, so don't run both at the same time.

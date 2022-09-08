@@ -18,7 +18,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     #vb.gui = true
     vb.name = "mid-pg-new-repo"
-    # UNCOMMENT these and config section lower for higher PG performance (stronger hosts only!)
+    # COMMENT these and config section lower for lower performance hosts
     vb.memory = 8192
     vb.cpus = 4
   end
