@@ -123,7 +123,7 @@ EOF
     wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new-audit.sql
     wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/native-new/postgres-new-quartz.sql
     # old repo schema + test support db cleanup script
-    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/generic-old/postgresql-4.5-all.sql
+    wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/config/sql/generic-old/postgresql-4.6-all.sql
     wget -q https://raw.githubusercontent.com/Evolveum/midpoint/master/repo/repo-sql-impl-test/sql-procedures/postgresql.sql
 
     # full DB with new repo and audit+quartz tables
@@ -142,7 +142,7 @@ EOF
     psql midaudit midaudit < postgres-new-audit.sql
     psql midaudit midaudit -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
 
-    psql midold midold < postgresql-4.5-all.sql
+    psql midold midold < postgresql-4.6-all.sql
     # importing midPoint cleanup procedure for tests
     psql midold midold < postgresql.sql
     psql midold midold -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
