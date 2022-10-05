@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (C) 2010-2021 Evolveum and contributors
+  ~
+  ~ This work is dual-licensed under the Apache License 2.0
+  ~ and European Union Public License. See LICENSE file for details.
+  -->
+<configuration>
+    <midpoint>
+        <webApplication>
+            <importFolder>${midpoint.home}/import</importFolder>
+        </webApplication>
+        <repository>
+            <type>sqale</type>
+            <database>postgresql</database>
+            <jdbcUrl>jdbc:postgresql://192.168.56.11:5432/midpoint</jdbcUrl>
+            <jdbcUsername>midpoint</jdbcUsername>
+            <jdbcPassword>password</jdbcPassword>
+
+            <!-- This is the default, you may try xml if you like pointy brackets. -->
+            <fullObjectFormat>json</fullObjectFormat>
+
+            <!-- Max pool size can't be lower than 2, even if set so. -->
+            <maxPoolSize>10</maxPoolSize>
+            <idleTimeout>60</idleTimeout>
+        </repository>
+        <audit>
+            <auditService>
+                <auditServiceFactoryClass>com.evolveum.midpoint.audit.impl.LoggerAuditServiceFactory</auditServiceFactoryClass>
+            </auditService>
+            <auditService>
+                <!-- Use this instead of com.evolveum.midpoint.repo.sql.SqlAuditServiceFactory -->
+                <auditServiceFactoryClass>com.evolveum.midpoint.repo.sqale.audit.SqaleAuditServiceFactory</auditServiceFactoryClass>
+                <!--
+                Example of separate audit setup with limited pool size (demonstration, not necessarily a good idea).
+                JDBC password is the same like in the main repository and will be reused from there.
+                -->
+                <jdbcUrl>jdbc:postgresql://192.168.56.11:5432/midaudit</jdbcUrl>
+                <jdbcUsername>midaudit</jdbcUsername>
+                <maxPoolSize>4</maxPoolSize>
+            </auditService>
+        </audit>
+        <taskManager>
+            <!--
+            JDBC Job store requires Quartz tables and initializes separate Quartz connection pool.
+            Also, any clustered setting enables this.
+            Experimental "useRepositoryConnectionProvider" switch tells task manager scheduler to
+            reuse the same connection provider like for the main repository.
+            -->
+
+            <!--
+            <jdbcJobStore>true</jdbcJobStore>
+            <useRepositoryConnectionProvider>true</useRepositoryConnectionProvider>
+            -->
+        </taskManager>
+        <icf>
+            <scanClasspath>true</scanClasspath>
+            <scanDirectory>${midpoint.home}/icf-connectors</scanDirectory>
+        </icf>
+        <keystore>
+            <keyStorePath>${midpoint.home}/keystore.jceks</keyStorePath>
+            <keyStorePassword>changeit</keyStorePassword>
+            <encryptionKeyAlias>default</encryptionKeyAlias>
+        </keystore>
+    </midpoint>
+</configuration>

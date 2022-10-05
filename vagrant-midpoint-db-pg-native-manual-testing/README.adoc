@@ -1,0 +1,40 @@
+= PostgreSQL for midPoint - new repository
+
+Necessary SQL schema files from midpoint sources (repository) are downloaded by Vagrantfile.
+If a different version is necessary, modify the `Vagrantfile` accordingly.
+
+To run the environment (first time takes longer):
+
+----
+vagrant up
+----
+
+And wait... if everything is OK, you can try:
+
+----
+vagrant ssh
+----
+
+Main reason for this Vagrantbox is manual testing with new repository.
+There is `midpoint` database with separate `midaudit`.
+
+== How to use
+
+JDBC URL is: `jdbc:postgresql://192.168.56.11:5432/midpoint`
+
+Username/password: `midpoint`/`password`
+
+IP must match the one from the link:Vagrantfile[].
+
+=== Using dedicated midpoint.home directory
+
+To use the new repository for midpoint application it is recommended to pre-create dedicated
+`${midpoint.home}` directory for it and copy the provided `config.xml` there.
+Then run the midpoint with this JVM argument: `-Dmidpoint.home=<path-to>\midpoint-home-manual-testing`
+(where `midpoint-home-manual-testing` is the actual midPoint home).
+
+== See also
+
+* https://docs.evolveum.com/midpoint/reference/repository/native-postgresql/usage/[Using Native PostgreSQL Repository]
+* https://docs.evolveum.com/midpoint/reference/repository/configuration/[Repository Configuration]
+* https://docs.evolveum.com/midpoint/reference/repository/generic/postgresql/[Postgres setup for old repository]

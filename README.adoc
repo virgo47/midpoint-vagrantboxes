@@ -6,6 +6,9 @@
 
 3+| *Database boxes*
 
+| vagrant-midpoint-db-pg-native-manual-testing | 192.168.56.11
+| link:vagrant-midpoint-db-pg-native-manual-testing/README.adoc[PostgreSQL 14 (native)]
+
 | vagrant-midpoint-db-pg-new-repo | 192.168.56.33
 | link:vagrant-midpoint-db-pg-native/README.adoc[PostgreSQL 14 (native)]
 
