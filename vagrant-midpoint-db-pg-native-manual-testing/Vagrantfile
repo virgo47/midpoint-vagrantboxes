@@ -123,5 +123,10 @@ EOF
     # pure audit DB
     psql midaudit midaudit -f postgres-new-audit.sql
     psql midaudit midaudit -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"
+
+    # DBtable resource database
+    sudo -i -u postgres psql -c "CREATE USER dbtable WITH PASSWORD 'password' LOGIN SUPERUSER;"
+    sudo -i -u postgres psql -c "CREATE DATABASE dbtable WITH OWNER = dbtable ENCODING = 'UTF8' TABLESPACE = pg_default LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' CONNECTION LIMIT = -1;"
+    # create tables as needed from IDEA
   SHELL
 end

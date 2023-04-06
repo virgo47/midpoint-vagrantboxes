@@ -31,12 +31,9 @@
             <auditService>
                 <!-- Use this instead of com.evolveum.midpoint.repo.sql.SqlAuditServiceFactory -->
                 <auditServiceFactoryClass>com.evolveum.midpoint.repo.sqale.audit.SqaleAuditServiceFactory</auditServiceFactoryClass>
-                <!--
-                Example of separate audit setup with limited pool size (demonstration, not necessarily a good idea).
-                JDBC password is the same like in the main repository and will be reused from there.
-                -->
                 <jdbcUrl>jdbc:postgresql://192.168.56.11:5432/midaudit</jdbcUrl>
                 <jdbcUsername>midaudit</jdbcUsername>
+                <jdbcPassword>password</jdbcPassword>
                 <maxPoolSize>4</maxPoolSize>
             </auditService>
         </audit>
